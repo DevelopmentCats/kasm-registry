@@ -1,30 +1,8 @@
 {
   "friendly_name": "PokeMMO",
   "description": "PokeMMO is a free-to-play MMORPG based on the Pokemon games. This workspace allows you to play PokeMMO directly in your browser. IMPORTANT: Users must provide their own legitimate ROM sources.",
-  "image_src": "pokemmo.png",
-  "architecture": [
-    "amd64",
-    "arm64"
-  ],
-  "compatibility": [
-    {
-      "kasm_version": "1.13.x",
-      "image": {
-        "name": "ghcr.io/lanjelin/pokemmo-docker",
-        "tag": "latest"
-      },
-      "uncompressed_size_mb": 2000
-    }
-  ],
-  "categories": [
-    "Games"
-  ],
   "docker_registry": "https://ghcr.io/",
-  "cores": 2,
-  "memory": 2768,
-  "gpu_count": 0,
-  "cpu_allocation_method": "Inherit",
-  "notes": "Requires GPU passthrough for optimal performance. Make sure to configure the ROM paths correctly.",
+  "image_src": "pokemmo.png",
   "run_config": {
     "hostname": "kasm",
     "security_opt": ["seccomp=unconfined"],
@@ -69,5 +47,27 @@
       "cmd": "bash -c '/dockerstartup/custom_startup.sh --assign --url \"$KASM_URL\"'"
     }
   },
+  "categories": [
+    "Games"
+  ],
+  "architecture": [
+    "amd64",
+    "arm64"
+  ],
+  "compatibility": [
+    {
+      "version": "1.17.x",
+      "image": "ghcr.io/lanjelin/pokemmo-docker:latest",
+      "uncompressed_size_mb": 2000,
+      "available_tags": [
+        "latest"
+      ]
+    }
+  ],
+  "cores": 2,
+  "memory": 2768,
+  "gpu_count": 0,
+  "cpu_allocation_method": "Inherit",
+  "notes": "Requires GPU passthrough for optimal performance. Make sure to configure the ROM paths correctly.",
   "startup_script": "mkdir -p /pokemmo/roms && for url in $ROM_CONFIG_POKEMON_BLACK_URL $ROM_CONFIG_POKEMON_FIRERED_URL $ROM_CONFIG_POKEMON_EMERALD_URL $ROM_CONFIG_POKEMON_PLATINUM_URL $ROM_CONFIG_POKEMON_HEARTGOLD_URL; do filename=\"/pokemmo/roms/$(basename $url)\"; if [ ! -f \"$filename\" ]; then echo \"Downloading $(basename $url)...\"; wget -q --show-progress -O \"$filename\" \"$url\" || echo \"Failed to download $(basename $url)\"; else echo \"ROM already exists: $(basename $url)\"; fi; done"
 } 
