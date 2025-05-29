@@ -19,7 +19,7 @@
       ]
     }
   ],
-  "docker_registry": "https://index.docker.io/v1/",
+  "docker_registry": "ghcr.io",
   "docker_config": {
     "hostname": "kasm",
     "environment": {
