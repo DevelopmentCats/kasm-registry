@@ -1,9 +1,32 @@
 {
-  "description": "PokeMMO is a free-to-play MMORPG based on the Pokemon games. This workspace allows you to play PokeMMO directly in your browser.",
+  "description": "PokeMMO is a free-to-play MMORPG based on the Pokemon games. This workspace allows you to play PokeMMO directly in your browser. IMPORTANT: Users must provide their own legitimate ROM sources.",
   "docker_registry": "https://index.docker.io/v1/",
   "image_src": "pokemmo.png",
   "run_config": {
-    "hostname": "kasm"
+    "hostname": "kasm",
+    "volumes": {
+      "roms": {
+        "path": "/pokemmo/roms",
+        "description": "Directory for Pokemon ROM files (required)",
+        "required": true
+      },
+      "config": {
+        "path": "/pokemmo/config",
+        "description": "PokeMMO configuration directory",
+        "required": false
+      },
+      "mods": {
+        "path": "/pokemmo/data/mods",
+        "description": "PokeMMO mods directory",
+        "required": false
+      }
+    },
+    "environment": {
+      "PUID": "1000",
+      "PGID": "1000",
+      "TZ": "UTC",
+      "DRINODE": "/dev/dri/renderD128"
+    }
   },
   "exec_config": {
     "go": {
@@ -30,5 +53,47 @@
         "latest"
       ]
     }
-  ]
+  ],
+  "rom_config": {
+    "required_roms": {
+      "pokemon_black_or_white": {
+        "filename": "pokemon_black.nds",
+        "destination": "/pokemmo/roms/",
+        "download_url": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_black.nds",
+        "required": true,
+        "description": "Pokemon Black/White ROM (required)"
+      }
+    },
+    "optional_roms": {
+      "pokemon_firered": {
+        "filename": "pokemon_firered.gba",
+        "destination": "/pokemmo/roms/",
+        "download_url": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_firered.gba",
+        "required": false,
+        "description": "Pokemon FireRed ROM (optional)"
+      },
+      "pokemon_emerald": {
+        "filename": "pokemon_emerald.gba",
+        "destination": "/pokemmo/roms/",
+        "download_url": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_emerald.gba",
+        "required": false,
+        "description": "Pokemon Emerald ROM (optional)"
+      },
+      "pokemon_platinum": {
+        "filename": "pokemon_platinum.nds",
+        "destination": "/pokemmo/roms/",
+        "download_url": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_platinum.nds",
+        "required": false,
+        "description": "Pokemon Platinum ROM (optional)"
+      },
+      "pokemon_heartgold": {
+        "filename": "pokemon_heartgold.nds",
+        "destination": "/pokemmo/roms/",
+        "download_url": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_heartgold.nds",
+        "required": false,
+        "description": "Pokemon HeartGold ROM (optional)"
+      }
+    }
+  },
+  "startup_script": "#!/bin/bash\n\n# Function to check if ROM exists\ncheck_rom() {\n    local filename=$1\n    if [ -f \"/pokemmo/roms/$filename\" ]; then\n        echo \"ROM already exists: $filename\"\n        return 0\n    fi\n    return 1\n}\n\n# Function to download ROM\ndownload_rom() {\n    local url=$1\n    local filename=$2\n    local destination=$3\n    \n    if [ -f \"$destination/$filename\" ]; then\n        echo \"ROM already exists: $filename\"\n        return 0\n    fi\n    \n    echo \"Downloading $filename...\"\n    mkdir -p $destination\n    wget -q --show-progress -O \"$destination/$filename\" \"$url\"\n    if [ $? -eq 0 ]; then\n        echo \"Successfully downloaded: $filename\"\n        return 0\n    else\n        echo \"Failed to download: $filename\"\n        return 1\n    fi\n}\n\n# Create ROM directory\nmkdir -p /pokemmo/roms\n\n# Check and download required ROM (Black/White)\nif ! check_rom \"pokemon_black.nds\" && ! check_rom \"pokemon_white.nds\"; then\n    echo \"Required ROM not found, attempting download...\"\n    if ! download_rom \"${ROM_CONFIG_POKEMON_BLACK_URL}\" \"pokemon_black.nds\" \"/pokemmo/roms\"; then\n        echo \"ERROR: Failed to download required ROM (Pokemon Black)\"\n        echo \"Please ensure the download URL is correct and accessible\"\n        exit 1\n    fi\nfi\n\n# Define optional ROMs and their URLs\ndeclare -A optional_roms=(\n    [\"pokemon_firered.gba\"]=\"${ROM_CONFIG_POKEMON_FIRERED_URL}\"\n    [\"pokemon_emerald.gba\"]=\"${ROM_CONFIG_POKEMON_EMERALD_URL}\"\n    [\"pokemon_platinum.nds\"]=\"${ROM_CONFIG_POKEMON_PLATINUM_URL}\"\n    [\"pokemon_heartgold.nds\"]=\"${ROM_CONFIG_POKEMON_HEARTGOLD_URL}\"\n)\n\n# Check and download optional ROMs\necho \"\\nChecking optional ROMs...\"\nfor rom in \"${!optional_roms[@]}\"; do\n    if ! check_rom \"$rom\"; then\n        echo \"Optional ROM not found: $rom\"\n        if download_rom \"${optional_roms[$rom]}\" \"$rom\" \"/pokemmo/roms\"; then\n            echo \"Successfully downloaded optional ROM: $rom\"\n        else\n            echo \"Failed to download optional ROM: $rom - continuing anyway\"\n        fi\n    fi\ndone\n\n# Final ROM verification\necho \"\\nVerifying available ROMs:\"\nfound_required=false\necho \"Required ROMs:\"\nif [ -f \"/pokemmo/roms/pokemon_black.nds\" ]; then\n    echo \"✓ Pokemon Black\"\n    found_required=true\nfi\nif [ -f \"/pokemmo/roms/pokemon_white.nds\" ]; then\n    echo \"✓ Pokemon White\"\n    found_required=true\nfi\n\nif ! $found_required; then\n    echo \"✗ No required ROM found (Black/White)\"\n    exit 1\nfi\n\necho \"\\nOptional ROMs:\"\nfor rom in \"${!optional_roms[@]}\"; do\n    if [ -f \"/pokemmo/roms/$rom\" ]; then\n        echo \"✓ $(basename \"$rom\" .gba | basename .nds | sed 's/pokemon_/Pokemon /; s/_/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}FS=\"\")')\"\n    else\n        echo \"✗ $(basename \"$rom\" .gba | basename .nds | sed 's/pokemon_/Pokemon /; s/_/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}FS=\"\")')\"\n    fi\ndone\n\necho \"\\nROM verification complete. Starting PokeMMO...\""
 } 
