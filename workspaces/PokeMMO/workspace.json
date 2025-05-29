@@ -1,18 +1,30 @@
 {
   "friendly_name": "PokeMMO",
-  "name": "pokemmo",
   "description": "PokeMMO is a free-to-play MMORPG based on the Pokemon games. This workspace allows you to play PokeMMO directly in your browser. IMPORTANT: Users must provide their own legitimate ROM sources.",
   "image_src": "pokemmo.png",
+  "architecture": [
+    "amd64",
+    "arm64"
+  ],
+  "compatibility": [
+    {
+      "kasm_version": "1.13.x",
+      "image": {
+        "name": "ghcr.io/lanjelin/pokemmo-docker",
+        "tag": "latest"
+      },
+      "uncompressed_size_mb": 2000
+    }
+  ],
   "categories": [
     "Games"
   ],
-  "type": "Container",
+  "docker_registry": "https://ghcr.io/",
   "cores": 2,
   "memory": 2768,
-  "docker_registry": "https://ghcr.io/",
-  "image": "ghcr.io/lanjelin/pokemmo-docker:latest",
   "gpu_count": 0,
   "cpu_allocation_method": "Inherit",
+  "notes": "Requires GPU passthrough for optimal performance. Make sure to configure the ROM paths correctly.",
   "run_config": {
     "hostname": "kasm",
     "security_opt": ["seccomp=unconfined"],
@@ -30,23 +42,23 @@
     },
     "devices": [
       "/dev/dri/renderD128:/dev/dri/renderD128:rwm"
-    ]
-  },
-  "volume_mappings": {
-    "roms": {
-      "path": "/pokemmo/roms",
-      "description": "Directory for Pokemon ROM files (required)",
-      "required": true
-    },
-    "config": {
-      "path": "/pokemmo/config",
-      "description": "PokeMMO configuration directory",
-      "required": false
-    },
-    "mods": {
-      "path": "/pokemmo/data/mods",
-      "description": "PokeMMO mods directory",
-      "required": false
+    ],
+    "volumes": {
+      "roms": {
+        "path": "/pokemmo/roms",
+        "description": "Directory for Pokemon ROM files (required)",
+        "required": true
+      },
+      "config": {
+        "path": "/pokemmo/config",
+        "description": "PokeMMO configuration directory",
+        "required": false
+      },
+      "mods": {
+        "path": "/pokemmo/data/mods",
+        "description": "PokeMMO mods directory",
+        "required": false
+      }
     }
   },
   "exec_config": {
