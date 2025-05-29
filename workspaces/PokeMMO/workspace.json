@@ -1,54 +1,54 @@
 {
   "friendly_name": "PokeMMO",
+  "name": "pokemmo",
   "description": "PokeMMO is a free-to-play MMORPG based on the Pokemon games. This workspace allows you to play PokeMMO directly in your browser. IMPORTANT: Users must provide their own legitimate ROM sources.",
   "image_src": "pokemmo.png",
   "categories": [
     "Games"
   ],
-  "architecture": [
-    "amd64",
-    "arm64"
-  ],
-  "compatibility": [
-    {
-      "version": "1.17.x",
-      "image": "ghcr.io/lanjelin/pokemmo-docker:latest",
-      "uncompressed_size_mb": 2000,
-      "available_tags": [
-        "latest"
-      ]
-    }
-  ],
+  "type": "Container",
+  "cores": 2,
+  "memory": 2768,
   "docker_registry": "https://ghcr.io/",
-  "volumes": {
+  "image": "ghcr.io/lanjelin/pokemmo-docker:latest",
+  "gpu_count": 0,
+  "cpu_allocation_method": "Inherit",
+  "run_config": {
+    "hostname": "kasm",
+    "security_opt": ["seccomp=unconfined"],
+    "shm_size": "2g",
+    "environment": {
+      "PUID": "1000",
+      "PGID": "1000",
+      "TZ": "UTC",
+      "DRINODE": "/dev/dri/renderD128",
+      "ROM_CONFIG_POKEMON_BLACK_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_black.nds",
+      "ROM_CONFIG_POKEMON_FIRERED_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_firered.gba",
+      "ROM_CONFIG_POKEMON_EMERALD_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_emerald.gba",
+      "ROM_CONFIG_POKEMON_PLATINUM_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_platinum.nds",
+      "ROM_CONFIG_POKEMON_HEARTGOLD_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_heartgold.nds"
+    },
+    "devices": [
+      "/dev/dri/renderD128:/dev/dri/renderD128:rwm"
+    ]
+  },
+  "volume_mappings": {
     "roms": {
       "path": "/pokemmo/roms",
-      "required": true,
-      "description": "Directory for Pokemon ROM files (required)"
+      "description": "Directory for Pokemon ROM files (required)",
+      "required": true
     },
     "config": {
       "path": "/pokemmo/config",
-      "required": false,
-      "description": "PokeMMO configuration directory"
+      "description": "PokeMMO configuration directory",
+      "required": false
     },
     "mods": {
       "path": "/pokemmo/data/mods",
-      "required": false,
-      "description": "PokeMMO mods directory"
+      "description": "PokeMMO mods directory",
+      "required": false
     }
   },
-  "environment": {
-    "PUID": "1000",
-    "PGID": "1000",
-    "TZ": "UTC",
-    "DRINODE": "/dev/dri/renderD128",
-    "ROM_CONFIG_POKEMON_BLACK_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_black.nds",
-    "ROM_CONFIG_POKEMON_FIRERED_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_firered.gba",
-    "ROM_CONFIG_POKEMON_EMERALD_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_emerald.gba",
-    "ROM_CONFIG_POKEMON_PLATINUM_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_platinum.nds",
-    "ROM_CONFIG_POKEMON_HEARTGOLD_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_heartgold.nds"
-  },
-  "hostname": "kasm",
   "exec_config": {
     "go": {
       "cmd": "bash -c '/dockerstartup/custom_startup.sh --go --url \"$KASM_URL\"'"
