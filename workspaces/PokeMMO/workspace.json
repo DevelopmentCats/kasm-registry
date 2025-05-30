@@ -32,10 +32,7 @@
     {
       "version": "1.17.x",
       "image": "forge.dualriver.com/cat/pokemmo-docker:v1.1",
-      "uncompressed_size_mb": 2000,
-      "available_tags": [
-        "v1.1"
-      ]
+      "uncompressed_size_mb": 3000
     }
   ],
   "cores": 2,
