@@ -31,8 +31,12 @@
   "compatibility": [
     {
       "version": "1.17.x",
-      "image": "forge.dualriver.com/cat/pokemmo-docker:v1.1",
-      "uncompressed_size_mb": 3000
+      "image": "forge.dualriver.com/cat/pokemmo-docker:latest",
+      "uncompressed_size_mb": 3000,
+      "available_tags": [
+        "latest",
+        "develop"
+      ]
     }
   ],
   "cores": 2,
