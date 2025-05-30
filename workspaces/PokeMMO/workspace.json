@@ -1,7 +1,7 @@
 {
   "friendly_name": "PokeMMO",
-  "description": "PokeMMO is a free-to-play MMORPG based on the Pokemon games. This workspace allows you to play PokeMMO directly in your browser. IMPORTANT: Users must provide their own legitimate ROM sources.",
-  "docker_registry": "https://ghcr.io/",
+  "description": "PokeMMO is a free-to-play MMORPG based on the Pokemon games. This workspace allows you to play PokeMMO directly in your browser.",
+  "docker_registry": "https://forge.dualriver.com/",
   "image_src": "pokemmo.png",
   "run_config": {
     "hostname": "kasm",
@@ -10,33 +10,7 @@
     "environment": {
       "PUID": "1000",
       "PGID": "1000",
-      "TZ": "UTC",
-      "DRINODE": "/dev/dri/renderD128",
-      "ROM_CONFIG_POKEMON_BLACK_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_black.nds",
-      "ROM_CONFIG_POKEMON_FIRERED_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_firered.gba",
-      "ROM_CONFIG_POKEMON_EMERALD_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_emerald.gba",
-      "ROM_CONFIG_POKEMON_PLATINUM_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_platinum.nds",
-      "ROM_CONFIG_POKEMON_HEARTGOLD_URL": "https://dir.chesher.xyz/Media/PokeMMO/pokemon_heartgold.nds"
-    },
-    "devices": [
-      "/dev/dri/renderD128:/dev/dri/renderD128:rwm"
-    ],
-    "volumes": {
-      "roms": {
-        "path": "/pokemmo/roms",
-        "description": "Directory for Pokemon ROM files (required)",
-        "required": true
-      },
-      "config": {
-        "path": "/pokemmo/config",
-        "description": "PokeMMO configuration directory",
-        "required": false
-      },
-      "mods": {
-        "path": "/pokemmo/data/mods",
-        "description": "PokeMMO mods directory",
-        "required": false
-      }
+      "TZ": "UTC"
     }
   },
   "exec_config": {
@@ -57,17 +31,15 @@
   "compatibility": [
     {
       "version": "1.17.x",
-      "image": "ghcr.io/lanjelin/pokemmo-docker:latest",
+      "image": "forge.dualriver.com/cat/pokemmo-docker:v1.1",
       "uncompressed_size_mb": 2000,
       "available_tags": [
-        "latest"
+        "v1.1"
       ]
     }
   ],
   "cores": 2,
   "memory": 2768,
   "gpu_count": 0,
-  "cpu_allocation_method": "Inherit",
-  "notes": "Requires GPU passthrough for optimal performance. Make sure to configure the ROM paths correctly.",
-  "startup_script": "mkdir -p /pokemmo/roms && for url in $ROM_CONFIG_POKEMON_BLACK_URL $ROM_CONFIG_POKEMON_FIRERED_URL $ROM_CONFIG_POKEMON_EMERALD_URL $ROM_CONFIG_POKEMON_PLATINUM_URL $ROM_CONFIG_POKEMON_HEARTGOLD_URL; do filename=\"/pokemmo/roms/$(basename $url)\"; if [ ! -f \"$filename\" ]; then echo \"Downloading $(basename $url)...\"; wget -q --show-progress -O \"$filename\" \"$url\" || echo \"Failed to download $(basename $url)\"; else echo \"ROM already exists: $(basename $url)\"; fi; done"
+  "cpu_allocation_method": "Inherit"
 } 
