@@ -10,20 +10,23 @@
     "environment": {
       "PUID": "1000",
       "PGID": "1000",
-      "TZ": "UTC"
+      "TZ": "UTC",
+      "KASM_VNC_PATH": "/usr/share/kasmvnc",
+      "STARTUP_SCRIPT": "/usr/local/bin/start-pokemmo",
+      "DISPLAY": ":1",
+      "LANG": "en_US.UTF-8"
     },
     "devices": ["/dev/snd"],
     "volumes": {
-      "/tmp/.X11-unix": "/tmp/.X11-unix",
-      "$HOME/.Xauthority": "/home/pokemmo/.Xauthority:ro"
+      "/tmp/.X11-unix": "/tmp/.X11-unix"
     }
   },
   "exec_config": {
     "go": {
-      "cmd": "bash -c '/dockerstartup/custom_startup.sh --go --url \"$KASM_URL\"'"
+      "cmd": "bash -c '/dockerstartup/kasm_default_profile.sh && /usr/local/bin/start-pokemmo'"
     },
     "assign": {
-      "cmd": "bash -c '/dockerstartup/custom_startup.sh --assign --url \"$KASM_URL\"'"
+      "cmd": "bash -c '/dockerstartup/kasm_default_profile.sh && /usr/local/bin/start-pokemmo'"
     }
   },
   "categories": [
