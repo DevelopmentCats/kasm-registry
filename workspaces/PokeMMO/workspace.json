@@ -8,13 +8,11 @@
     "security_opt": ["seccomp=unconfined"],
     "shm_size": "2g",
     "environment": {
-      "PUID": "1000",
-      "PGID": "1000",
-      "TZ": "UTC",
+      "KASM_USER": "1000",
+      "VNC_PW": "password",
       "KASM_VNC_PATH": "/usr/share/kasmvnc",
-      "STARTUP_SCRIPT": "/usr/local/bin/start-pokemmo",
-      "DISPLAY": ":1",
-      "LANG": "en_US.UTF-8"
+      "LANG": "en_US.UTF-8",
+      "STARTUP": "/usr/local/bin/start-pokemmo"
     },
     "devices": ["/dev/snd"],
     "volumes": {
@@ -23,10 +21,10 @@
   },
   "exec_config": {
     "go": {
-      "cmd": "bash -c '/dockerstartup/kasm_default_profile.sh && /usr/local/bin/start-pokemmo'"
+      "cmd": "bash -c '/dockerstartup/kasm_default_profile.sh --go'"
     },
     "assign": {
-      "cmd": "bash -c '/dockerstartup/kasm_default_profile.sh && /usr/local/bin/start-pokemmo'"
+      "cmd": "bash -c '/dockerstartup/kasm_default_profile.sh --assign'"
     }
   },
   "categories": [
