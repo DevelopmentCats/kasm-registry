@@ -6,17 +6,14 @@
   "run_config": {
     "hostname": "kasm",
     "security_opt": ["seccomp=unconfined"],
-    "shm_size": "2g",
-    "environment": {
-      "STARTUP": "/usr/local/bin/start-pokemmo"
-    }
+    "shm_size": "2g"
   },
   "exec_config": {
     "go": {
-      "cmd": "bash -c '/dockerstartup/custom_startup.sh --go --url \"$KASM_URL\"'"
+      "cmd": "bash -c '/dockerstartup/custom_startup.sh --go'"
     },
     "assign": {
-      "cmd": "bash -c '/dockerstartup/custom_startup.sh --assign --url \"$KASM_URL\"'"
+      "cmd": "bash -c '/dockerstartup/custom_startup.sh --assign'"
     }
   },
   "categories": [

@@ -48,3 +48,5 @@ test-timings.json
 # Cache
 *.tsbuildinfo
 .swc/
+
+Dockerfile
