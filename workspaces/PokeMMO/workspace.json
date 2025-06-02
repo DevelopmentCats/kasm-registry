@@ -1,8 +1,8 @@
 {
   "friendly_name": "PokeMMO",
   "description": "PokeMMO is a free-to-play MMORPG based on the Pokemon games. This workspace allows you to play PokeMMO directly in your browser.",
-  "docker_registry": "https://forge.dualriver.com/",
-  "image_src": "pokemmo.png",
+  "docker_registry": "ghcr.io",
+  "image_src": "pokemmo.svg",
   "run_config": {
     "hostname": "kasm",
     "security_opt": ["seccomp=unconfined"],
@@ -11,6 +11,11 @@
       "PUID": "1000",
       "PGID": "1000",
       "TZ": "UTC"
+    },
+    "devices": ["/dev/snd"],
+    "volumes": {
+      "/tmp/.X11-unix": "/tmp/.X11-unix",
+      "$HOME/.Xauthority": "/home/pokemmo/.Xauthority:ro"
     }
   },
   "exec_config": {
@@ -31,11 +36,10 @@
   "compatibility": [
     {
       "version": "1.17.x",
-      "image": "forge.dualriver.com/cat/pokemmo-docker:latest",
+      "image": "ghcr.io/developmentcats/pokemmo-kasm:latest",
       "uncompressed_size_mb": 3000,
       "available_tags": [
-        "latest",
-        "develop"
+        "latest"
       ]
     }
   ],
