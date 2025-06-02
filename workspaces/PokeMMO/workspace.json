@@ -8,30 +8,15 @@
     "security_opt": ["seccomp=unconfined"],
     "shm_size": "2g",
     "environment": {
-      "KASM_USER": 1000,
-      "VNC_PW": "password",
-      "KASM_VNC_PATH": "/usr/share/kasmvnc",
-      "LANG": "en_US.UTF-8",
-      "STARTUP": "/usr/local/bin/start-pokemmo",
-      "DISPLAY": ":1",
-      "KASM_SERVER_USER": 1000,
-      "KASM_SERVER_GROUP": 1000,
-      "KASM_SERVER_HOSTNAME": "kasm",
-      "KASM_VNC_RESOLUTION": "1280x1024",
-      "KASM_VNC_COL_DEPTH": "24",
-      "KASM_STARTUP_SCRIPT": "/dockerstartup/kasm_default_profile.sh"
-    },
-    "devices": ["/dev/snd"],
-    "volumes": {
-      "/tmp/.X11-unix": "/tmp/.X11-unix"
+      "STARTUP": "/usr/local/bin/start-pokemmo"
     }
   },
   "exec_config": {
     "go": {
-      "cmd": "/dockerstartup/kasm_default_profile.sh --go"
+      "cmd": "bash -c '/dockerstartup/custom_startup.sh --go --url \"$KASM_URL\"'"
     },
     "assign": {
-      "cmd": "/dockerstartup/kasm_default_profile.sh --assign"
+      "cmd": "bash -c '/dockerstartup/custom_startup.sh --assign --url \"$KASM_URL\"'"
     }
   },
   "categories": [
@@ -54,5 +39,6 @@
   "cores": 2,
   "memory": 2768,
   "gpu_count": 0,
-  "cpu_allocation_method": "Inherit"
+  "cpu_allocation_method": "Inherit",
+  "notes": "Requires seccomp=unconfined for proper operation"
 } 
