@@ -26,7 +26,7 @@
   "compatibility": [
     {
       "version": "1.17.x",
-      "image": "ghcr.io/developmentcats/osrs-runelite-kasm:latest",
+      "image": "ghcr.io/developmentcats/osrs-kasm:latest",
       "uncompressed_size_mb": 2500,
       "available_tags": [
         "latest"
