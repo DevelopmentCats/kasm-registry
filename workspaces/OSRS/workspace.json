@@ -2,7 +2,7 @@
   "friendly_name": "OSRS Runelite",
   "description": "Old School RuneScape in a browser-based environment using Runelite client. Play OSRS directly in your browser with all the features of the popular Runelite client.",
   "docker_registry": "ghcr.io",
-  "image_src": "osrs.png",
+  "image_src": "osrs.svg",
   "run_config": {
     "hostname": "kasm",
     "security_opt": ["seccomp=unconfined"],
