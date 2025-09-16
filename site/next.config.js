@@ -7,7 +7,7 @@ const nextConfig = {
     name: 'Cats Kasm Registry',
     description: 'The cat store for Kasm supported workspaces.',
     icon: '/img/logo.svg',
-    listUrl: 'https://DevelopmentCats.github.io/kasm-registry',
+    listUrl: 'https://DevelopmentCats.github.io/kasm-registry/',
     contactUrl: 'https://DevelopmentCats.github.io/kasm-registry/issues',
   },
   reactStrictMode: true,
