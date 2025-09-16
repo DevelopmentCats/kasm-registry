@@ -2,7 +2,7 @@
   "friendly_name": "PokeMMO",
   "description": "PokeMMO is a free-to-play MMORPG based on the Pokemon games. This workspace allows you to play PokeMMO directly in your browser.",
   "docker_registry": "ghcr.io",
-  "image_src": "pokemmo.svg",
+  "image_src": "pokemmo.png",
   "run_config": {
     "hostname": "kasm",
     "security_opt": ["seccomp=unconfined"],

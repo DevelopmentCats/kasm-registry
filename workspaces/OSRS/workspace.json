@@ -2,7 +2,7 @@
   "friendly_name": "OSRS Runelite",
   "description": "Old School RuneScape in a browser-based environment using Runelite client. Play OSRS directly in your browser with all the features of the popular Runelite client.",
   "docker_registry": "ghcr.io",
-  "image_src": "osrs.svg",
+  "image_src": "osrs.png",
   "run_config": {
     "hostname": "kasm",
     "security_opt": ["seccomp=unconfined"],
@@ -34,7 +34,7 @@
     }
   ],
   "cores": 2,
-  "memory": 2048,
+  "memory": 4096,
   "gpu_count": 0,
   "cpu_allocation_method": "Inherit",
   "notes": "Provides browser-based access to Old School RuneScape using the Runelite client. Includes persistent storage support for settings and configurations."
